@@ -41,6 +41,16 @@ class UserController {
   async update(req, res) {
     try {
       const { id } = req.params;
+
+      const user = new userModel(req.body);
+
+      const error = await user.validate();
+
+      if (error) {
+        res.status(400).json(error);
+        return;
+      }
+
       const updatedUser = await userModel.findByIdAndUpdate(id, req.body, {
         new: true,
       });
@@ -67,6 +77,24 @@ class UserController {
       }
 
       res.send(`User with ID ${id} deleted`);
+    } catch (e) {
+      res.status(500).json(e);
+    }
+  }
+
+  async patch(req, res) {
+    try {
+      const { id } = req.params;
+
+      const updated = await userModel.findByIdAndUpdate(id, req.body, {
+        new: true,
+      });
+
+      if (!updated) {
+        res.status(404).send(`User with ID ${id} not found!`);
+      }
+
+      res.json(updated);
     } catch (e) {
       res.status(500).json(e);
     }

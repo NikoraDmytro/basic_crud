@@ -1,9 +1,9 @@
-import path from "path";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 
 import userRouter from "./routes/user.js";
+import { errorHandler } from "./errorHandler.js";
 
 dotenv.config();
 
@@ -15,6 +15,8 @@ const app = express();
 app.use(express.json());
 
 app.use("/users", userRouter);
+
+app.use(errorHandler);
 
 async function startApp() {
   try {

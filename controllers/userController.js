@@ -1,102 +1,73 @@
 import userModel from "../models/User.model.js";
+import userService from "../services/UserService.js";
 
 class UserController {
-  async get(req, res) {
+  async get(_, res) {
     try {
-      const users = await userModel.find();
+      const users = await userService.get();
 
       res.json(users);
     } catch (e) {
-      res.status(500).json(e);
+      next(e);
     }
   }
 
-  async getOne(req, res) {
+  async getOne(req, res, next) {
     try {
       const { id } = req.params;
-      const user = await userModel.findById(id);
-
-      if (!user) {
-        res.status(404).send(`User with ID ${id} not found!`);
-        return;
-      }
+      const user = await userService.getOne(id);
 
       res.json(user);
     } catch (e) {
-      res.status(500).json(e);
+      next(e);
     }
   }
 
-  async create(req, res) {
+  async create(req, res, next) {
     try {
-      const user = req.body;
-      const created = await userModel.create(user);
+      const userToCreate = req.body;
+      const created = await userService.create(userToCreate);
 
       res.status(201).json(created);
     } catch (e) {
-      res.status(500).json(e);
+      next(e);
     }
   }
 
-  async update(req, res) {
+  async update(req, res, next) {
     try {
       const { id } = req.params;
+      const userToUpdate = req.body;
 
-      const user = new userModel(req.body);
-
-      const error = await user.validate();
-
-      if (error) {
-        res.status(400).json(error);
-        return;
-      }
-
-      const updatedUser = await userModel.findByIdAndUpdate(id, req.body, {
-        new: true,
-      });
-
-      if (!updatedUser) {
-        res.status(404).send(`User with ID ${id} not found!`);
-        return;
-      }
+      const updatedUser = await userService.update(id, userToUpdate);
 
       res.json(updatedUser);
     } catch (e) {
-      res.status(500).json(e);
+      next(e);
     }
   }
 
-  async delete(req, res) {
+  async delete(req, res, next) {
     try {
       const { id } = req.params;
-      const deleted = await userModel.findByIdAndDelete(id);
+      await userService.delete(id);
 
-      if (!deleted) {
-        res.status(404).send(`User with ID ${id} not found!`);
-        return;
-      }
-
-      res.send(`User with ID ${id} deleted`);
+      res.send(`User with ID ${id} deleted!`);
     } catch (e) {
-      res.status(500).json(e);
+      next(e);
     }
   }
 
-  async patch(req, res) {
+  async patch(req, res, next) {
     try {
       const { id } = req.params;
+      const dataToUpdate = req.body;
 
-      const updated = await userModel.findByIdAndUpdate(id, req.body, {
-        new: true,
-      });
-
-      if (!updated) {
-        res.status(404).send(`User with ID ${id} not found!`);
-      }
+      const updated = await userService.patch(id, dataToUpdate);
 
       res.json(updated);
     } catch (e) {
-      res.status(500).json(e);
+      next(e);
     }
   }
 }

@@ -1,52 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+
+import { useAxios } from "./hooks/useAxios";
+import { IUser } from "shared/models/IUser";
+import { getAllUsers } from "./service/usersApi";
 
 import styles from "App.module.scss";
 
-const url = "http://localhost:8080/users";
-
-interface User {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  residence: string;
-  dateOfBirthday: string;
-}
+const User = ({ user }: { user: IUser }) => {
+  return (
+    <div>
+      <p>{user.firstName}</p>
+      <p>{user.lastName}</p>
+      <p>{user.residence}</p>
+      <p>{user.dateOfBirthday.toDateString()}</p>
+    </div>
+  );
+};
 
 function App() {
-  const [users, setUsers] = useState<User[]>([]);
+  const { data: users, loading, error } = useAxios<IUser[]>(getAllUsers);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const res = await fetch(url);
-      const fetchedUsers = await res.json();
-
-      setUsers(fetchedUsers);
-    };
-
-    fetchUsers();
-  }, []);
-
-  const parseDateString = (dateString: string) => {
-    const date = new Date(dateString);
-
-    return date.toDateString();
+  const renderUsersList = () => {
+    if (!users) {
+      return;
+    }
+    if (!users.length) {
+      return <h1>List is empty!</h1>;
+    }
+    return users.map((user) => (
+      <li key={user._id}>
+        <User user={user} />
+      </li>
+    ));
   };
 
   return (
-    <div className={styles.mainBox}>
-      <h1>Users List:</h1>
+    <>
+      {
+        <div className={styles.mainBox}>
+          <h1>Users List:</h1>
 
-      <ul>
-        {users.map((user) => (
-          <li key={user._id}>
-            <p>{user.firstName}</p>
-            <p>{user.lastName}</p>
-            <p>{user.residence}</p>
-            <p>{parseDateString(user.dateOfBirthday)}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+          <ul>
+            {loading && <h1>Loading</h1>}
+            {error && <h1>{error}</h1>}
+            {renderUsersList()}
+          </ul>
+        </div>
+      }
+    </>
   );
 }
 

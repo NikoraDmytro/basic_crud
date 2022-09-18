@@ -1,44 +1,19 @@
 import React from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
 
-import { useAxios } from "./hooks/useAxios";
-import { IUser } from "shared/models/IUser";
-import { getAllUsers } from "./service/usersApi";
-
-import { Loader } from "components/Loader";
-import { UserCard } from "components/UserCard";
-
-import styles from "App.module.scss";
+import { UserLayout } from "layouts/UserLayout";
+import { UsersList } from "components/UsersList";
 
 function App() {
-  const { data: users, loading, error } = useAxios<IUser[]>(getAllUsers);
-
-  const renderUsersList = () => {
-    if (!users) return;
-    if (!users.length) return <h1>List is empty!</h1>;
-
-    return (
-      <ul className={styles.usersList}>
-        {users.map((user) => (
-          <li key={user._id}>
-            <UserCard user={user} />
-          </li>
-        ))}
-      </ul>
-    );
-  };
-
   return (
-    <>
-      {
-        <div className={styles.mainBox}>
-          <h1>Users List</h1>
+    <Routes>
+      <Route path="/" element={<Navigate to="users" />} />
 
-          {loading && <Loader />}
-          {error && <h1>{error}</h1>}
-          {renderUsersList()}
-        </div>
-      }
-    </>
+      <Route path="/users" element={<UserLayout />}>
+        <Route index element={<UsersList />} />
+        <Route path="add" element={<h1>TODO </h1>} />
+      </Route>
+    </Routes>
   );
 }
 

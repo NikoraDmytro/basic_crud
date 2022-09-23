@@ -19,3 +19,14 @@ export const getAllUsers = async () => {
 
   return users;
 };
+
+export const createUser = async (user: IUser) => {
+  const res = await instance.post<IUser>("/", user);
+
+  const createdUser = res.data;
+
+  //Converting date string to actual date
+  createdUser.dateOfBirthday = new Date(createdUser.dateOfBirthday);
+
+  return createdUser;
+};

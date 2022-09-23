@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 
 export const useAxios = <TReturn>(request: () => Promise<TReturn>) => {
@@ -12,12 +13,16 @@ export const useAxios = <TReturn>(request: () => Promise<TReturn>) => {
 
         const response = await request();
 
+        setError(undefined);
         setData(response);
-        setLoading(false);
       } catch (e) {
-        const error = e as Error;
+        const error = e as AxiosError<string>;
 
-        setError(error.message ?? "Внутрішня помилка сервера!");
+        if (error.response) {
+          setError(error.response.data);
+        } else {
+          setError(error.message ?? "Внутрішня помилка сервера!");
+        }
       } finally {
         setLoading(false);
       }

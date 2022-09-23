@@ -14,7 +14,7 @@ export const InputField = ({ name, label, ...props }: Props) => {
 
   const className = classNames(styles.inputField, {
     [styles.invalid]: meta.touched && meta.error,
-    [styles.valid]: meta.value && !meta.error,
+    [styles.valid]: meta.touched && !meta.error,
   });
 
   return (

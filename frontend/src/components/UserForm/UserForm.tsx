@@ -2,40 +2,63 @@ import React from "react";
 import { Formik, Form } from "formik";
 
 import { InputField } from "components/InputField";
+import { Spinner } from "components/Loaders/Spinner/Spinner";
+
+import { createUser } from "service/usersApi";
 import { userValidation } from "./utils/userValidation";
+import { useAxiosMutation } from "hooks/useAxiosMutation";
+
+import styles from "./UserForm.module.scss";
 
 type FormValues = {
   lastName: string;
   firstName: string;
   residence: string;
-  dateOfBirthday: Date | undefined;
+  dateOfBirthday: Date | "";
 };
 
 const initialValues: FormValues = {
   lastName: "",
   firstName: "",
   residence: "",
-  dateOfBirthday: undefined,
+  dateOfBirthday: "",
 };
 
 export const UserForm = () => {
+  const [addNewUser, { loading, error }] = useAxiosMutation(createUser);
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={userValidation}
-      onSubmit={(values, { setSubmitting, resetForm }) => {
-        console.log(values);
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
+        const user = await addNewUser(values);
 
-        resetForm();
+        if (user) {
+          alert("User added!");
+
+          resetForm();
+        }
+
         setSubmitting(false);
       }}
     >
-      <Form>
-        <InputField name="firstName" label="First Name" type="text" />
-        <InputField name="lastName" label="Last Name" type="text" />
-        <InputField name="residence" label="Residence" type="text" />
-        <InputField name="dateOfBirthday" label="Birth Date" type="date" />
-      </Form>
+      <>
+        <h1 className={styles.formLegend}>User Form</h1>
+
+        <Form className={styles.userForm}>
+          <InputField name="firstName" label="First Name" type="text" />
+          <InputField name="lastName" label="Last Name" type="text" />
+          <InputField name="residence" label="Residence" type="text" />
+          <InputField name="dateOfBirthday" label="Birth Date" type="date" />
+
+          {error && <h2 className={styles.submitError}>{error}</h2>}
+
+          <button type="submit" className={styles.submitBtn}>
+            {loading ? <Spinner /> : "Confirm"}
+          </button>
+        </Form>
+      </>
     </Formik>
   );
 };

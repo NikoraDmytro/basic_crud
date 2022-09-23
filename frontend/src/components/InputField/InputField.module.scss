@@ -1,0 +1,105 @@
+.inputField {
+  margin-bottom: 20px;
+
+  input {
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 4px;
+    color: rgb(78, 76, 76);
+    border: 1px solid rgb(79, 77, 77);
+  }
+
+  label {
+    font-size: 18px;
+    margin-right: 12px;
+    display: inline-block;
+  }
+}
+
+.valid,
+.invalid {
+  input {
+    border: none;
+  }
+}
+
+.valid input {
+  border: none;
+  outline: 2px solid rgb(0, 255, 0);
+}
+
+.invalid input {
+  border: none;
+  outline: 2px solid red;
+  animation: shake 0.25s 2;
+}
+
+@keyframes shake {
+  from {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}
+
+.tooltipBox {
+  position: relative;
+  display: inline-block;
+
+  &:hover .errorTooltip {
+    visibility: visible;
+    animation: fadeIn 0.25s;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.errorTooltip {
+  left: 50%;
+  z-index: 10;
+  color: #cc0033;
+  margin-top: 6px;
+  font-size: 18px;
+  margin-top: 10px;
+  padding: 8px 14px;
+  font-style: italic;
+  position: absolute;
+  visibility: hidden;
+  border-radius: 10px;
+  white-space: nowrap;
+  background-color: #fce4e4;
+  transform: translateX(-50%);
+  border: 1px solid #fcc2c3;
+}
+
+.errorTooltip::after,
+.errorTooltip::before {
+  left: 50%;
+  bottom: 100%;
+  content: " ";
+  position: absolute;
+  border: 7px solid transparent;
+}
+
+.errorTooltip::after {
+  border-bottom-color: #fce4e4;
+}
+
+.errorTooltip::before {
+  transform: translateY(-1px);
+  border-bottom-color: #fcc2c3;
+}

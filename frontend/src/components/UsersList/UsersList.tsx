@@ -4,7 +4,7 @@ import { useAxios } from "hooks/useAxios";
 import { IUser } from "shared/models/IUser";
 import { getAllUsers } from "service/usersApi";
 
-import { Loader } from "./Loader";
+import { Loader } from "components/Loader";
 import { UserCard } from "components/UserCard";
 
 import styles from "./UsersList.module.scss";

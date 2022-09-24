@@ -3,7 +3,8 @@ import { Route, Routes, Navigate } from "react-router-dom";
 
 import { UserLayout } from "layouts/UserLayout";
 import { UsersList } from "components/UsersList";
-import { UserForm } from "components/UserForm/UserForm";
+import { AddUserForm } from "./components/UserForm/AddUserForm";
+import { EditUserForm } from "components/UserForm/EditUserForm";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
 
       <Route path="/users" element={<UserLayout />}>
         <Route index element={<UsersList />} />
-        <Route path="add" element={<UserForm />} />
+        <Route path="add" element={<AddUserForm />} />
+        <Route path="edit/:id" element={<EditUserForm />} />
       </Route>
     </Routes>
   );

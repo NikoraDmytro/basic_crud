@@ -15,9 +15,7 @@ export const useAxiosMutation = (
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
 
-  const executeRequest = async (
-    ...args: Parameters<typeof request>
-  ): Promise<ReturnType<typeof request>> => {
+  const executeRequest = async (...args: Parameters<typeof request>) => {
     try {
       setLoading(true);
 

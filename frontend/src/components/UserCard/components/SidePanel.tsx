@@ -10,6 +10,7 @@ import { useAxiosMutation } from "hooks/useAxiosMutation";
 import { Spinner } from "components/Loaders/Spinner/Spinner";
 
 import styles from "./SidePanel.module.scss";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   id: string;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export const SidePanel = ({ id, removeFromList }: Props) => {
+  const navigate = useNavigate();
   const [remove, { loading, error }] = useAxiosMutation(deleteUser);
 
   if (error) {
@@ -42,7 +44,10 @@ export const SidePanel = ({ id, removeFromList }: Props) => {
         {loading ? <Spinner /> : <img src={deleteIcon} alt="Delete" />}
       </button>
 
-      <button className={classNames(styles.sidePanelBtn, styles.editUserBtn)}>
+      <button
+        onClick={() => navigate(`edit/${id}`)}
+        className={classNames(styles.sidePanelBtn, styles.editUserBtn)}
+      >
         <img src={editIcon} alt="Edit" />
       </button>
     </>

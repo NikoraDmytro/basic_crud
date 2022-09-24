@@ -1,12 +1,12 @@
 import React from "react";
 
 import { useAxios } from "hooks/useAxios";
-import { IUser } from "shared/models/IUser";
 import { getAllUsers } from "service/usersApi";
 
 import { UserCard } from "components/UserCard";
 import { Dots } from "components/Loaders/Dots/Dots";
 
+import { IUser } from "shared/models/IUser";
 import styles from "./UsersList.module.scss";
 
 export const UsersList = () => {

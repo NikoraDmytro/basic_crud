@@ -10,7 +10,16 @@ import { Dots } from "components/Loaders/Dots/Dots";
 import styles from "./UsersList.module.scss";
 
 export const UsersList = () => {
-  const { data: users, loading, error } = useAxios<IUser[]>(getAllUsers);
+  const {
+    data: users,
+    setData: setUsers,
+    loading,
+    error,
+  } = useAxios<IUser[]>(getAllUsers);
+
+  const removeFromList = (id: string) => {
+    setUsers((prev) => prev?.filter((user) => user._id !== id));
+  };
 
   if (loading) return <Dots />;
   if (error) return <h1 className={styles.fetchError}>{error}</h1>;
@@ -20,7 +29,7 @@ export const UsersList = () => {
     <ul className={styles.usersList}>
       {users.map((user) => (
         <li key={user._id}>
-          <UserCard user={user} />
+          <UserCard user={user} removeFromList={removeFromList} />
         </li>
       ))}
     </ul>

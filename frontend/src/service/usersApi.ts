@@ -30,3 +30,7 @@ export const createUser = async (user: IUser) => {
 
   return createdUser;
 };
+
+export const deleteUser = async (id: String) => {
+  await instance.delete(`/${id}`);
+};

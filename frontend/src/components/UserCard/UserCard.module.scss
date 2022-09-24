@@ -2,8 +2,11 @@
   margin: auto;
   display: flex;
   max-width: 500px;
+  position: relative;
+  overflow-x: hidden;
   border-radius: 6px;
   flex-direction: row;
+  transition: all 0.2s ease;
   box-shadow: 0 0 5px 2px rgb(220, 216, 216);
 }
 
@@ -45,4 +48,24 @@
     font-weight: 400;
     font-style: italic;
   }
+}
+
+.userCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 5px 4px rgb(220, 216, 216);
+
+  .sidePanel {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.sidePanel {
+  right: 0;
+  opacity: 0;
+  height: 100%;
+  position: absolute;
+  transform: translateX(100%);
+  transition: all 0.25s 0.1s linear;
+  box-shadow: -2px 0 7px rgb(74, 72, 72);
 }

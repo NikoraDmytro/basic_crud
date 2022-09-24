@@ -31,5 +31,5 @@ export const useAxios = <TReturn>(request: () => Promise<TReturn>) => {
     executeRequest();
   }, [request]);
 
-  return { loading, data, error };
+  return { loading, data, setData, error };
 };
